@@ -7,7 +7,7 @@ trigger:
 
   paths:
     include:
-    - /api-app
+    - /api-app/api
 
 pool:
   vmImage: 'ubuntu-latest'
