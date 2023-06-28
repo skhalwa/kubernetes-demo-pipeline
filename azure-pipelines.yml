@@ -1,0 +1,86 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - staging
+  paths:
+    include:
+      - /api
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: push-to-acr
+  displayName: Deploy-to-acr
+  jobs:
+    - job: staging
+      displayName: creating-image
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/staging')
+      steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'demo-docker-connection'
+          repository: 'staging-api'
+          command: 'buildAndPush'
+          Dockerfile: '**/api/Dockerfile'
+          tags: |
+            $(Build.BuildId)
+            latest
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: '$(agent.builddirectory)/source/api'
+          Contents: '**'
+          TargetFolder: '$(build.artifactstagingdirectory)/a'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/a'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
+
+    - job: dev
+      displayName: creating-image
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
+      steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'demo-docker-connection'
+          repository: 'dev-api'
+          command: 'buildAndPush'
+          Dockerfile: '**/api/Dockerfile'
+          tags: |
+            $(Build.BuildId)
+            latest
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: '$(agent.builddirectory)/source/api'
+          Contents: '**'
+          TargetFolder: '$(build.artifactstagingdirectory)/a'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/a'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'  
+        
+      
+    - job: production
+      displayName: creating-image
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/production')
+      steps:
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: '$(agent.builddirectory)/source/api'
+          Contents: '**'
+          TargetFolder: '$(build.artifactstagingdirectory)/a'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/a'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'  
+
+
