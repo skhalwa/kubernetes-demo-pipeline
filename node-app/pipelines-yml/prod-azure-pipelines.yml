@@ -5,7 +5,9 @@ trigger:
       - production
   paths:
     include:
-      - /node
+      - /node-app/node
+        /node-app/manifest
+        /node-app/pipelines-yml
 
 pool:
   vmImage: ubuntu-latest
