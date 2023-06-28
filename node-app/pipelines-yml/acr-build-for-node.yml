@@ -1,68 +1,67 @@
 stages:
-- stage: creating_a_image
-  displayName: Push to Acr
+- stage: push
+  displayName: Deploy-to-acr
   jobs:
-    - job: dev
-      displayName: push to acr
-      condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
-      steps: 
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'k8s-connection'
-          repository: 'dev_node'
-          command: 'buildAndPush'
-          Dockerfile: '**/api/Dockerfile'
-          tags: |
-            $(Build.BuildId)
-            latest
-      - task: CopyFiles@2
-        inputs:
-          SourceFolder: '/home/vsts/work/1/s'
-          Contents: '**'
-          TargetFolder: '/home/vsts/work/1/a'
-      - task: PublishBuildArtifacts@1
-        inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          ArtifactName: 'drop'
-          publishLocation: 'Container'
-    
-    
     - job: staging
-      displayName: push to acr
+      displayName: creating-image
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/staging')
-      steps: 
+      steps:
       - task: Docker@2
         inputs:
-          containerRegistry: 'k8s-connection'
-          repository: 'staging_node'
+          containerRegistry: 'demo-docker-connection'
+          repository: 'staging-backend'
           command: 'buildAndPush'
-          Dockerfile: '**/api/Dockerfile'
+          Dockerfile: '**/node-app/backend/Dockerfile'
           tags: |
             $(Build.BuildId)
             latest
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '/home/vsts/work/1/s'
+          SourceFolder: '$(agent.builddirectory)/s/node-app'
           Contents: '**'
-          TargetFolder: '/home/vsts/work/1/a'
+          TargetFolder: '$(build.artifactstagingdirectory)/a'
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/a'
           ArtifactName: 'drop'
           publishLocation: 'Container'
-    
 
-    - job: production
-      displayName: push to acr
-      condition: eq(variables['Build.SourceBranch'], 'refs/heads/production')
-      steps: 
+    - job: dev
+      displayName: creating-image
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
+      steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'demo-docker-connection'
+          repository: 'dev-api'
+          command: 'buildAndPush'
+          Dockerfile: '**/node-app/backend/Dockerfile'
+          tags: |
+            $(Build.BuildId)
+            latest
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '/home/vsts/work/1/s'
+          SourceFolder: '$(agent.builddirectory)/s/node-app'
           Contents: '**'
-          TargetFolder: '/home/vsts/work/1/a'
+          TargetFolder: '$(build.artifactstagingdirectory)/a'
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/a'
           ArtifactName: 'drop'
-          publishLocation: 'Container'
+          publishLocation: 'Container'  
+        
+      
+    - job: production
+      displayName: creating-image
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/production')
+      steps:
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: '$(agent.builddirectory)/s/node-app'
+          Contents: '**'
+          TargetFolder: '$(build.artifactstagingdirectory)/a'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/a'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'  
