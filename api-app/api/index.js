@@ -3,7 +3,7 @@ const app = express();
 
 app.get('/', (req, res) => {
   console.log('working fine on Staging')
-  res.send('Api application working fine, new updated pipeline..');
+  res.send('Api application working fine, new updated pipeline...');
 });
 
 const port = process.env.PORT || 3000; 
