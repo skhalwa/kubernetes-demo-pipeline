@@ -3,7 +3,7 @@ trigger:
   branches:
     include:
       - production
-  ppaths:
+  paths:
     include:
       - /node-app/node
       - /node-app/manifest
