@@ -9,9 +9,9 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'demo-docker-connection'
-          repository: 'staging-backend'
+          repository: 'staging-node'
           command: 'buildAndPush'
-          Dockerfile: '**/node-app/backend/Dockerfile'
+          Dockerfile: '**/node-app/node/Dockerfile'
           tags: |
             $(Build.BuildId)
             latest
@@ -33,9 +33,9 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'demo-docker-connection'
-          repository: 'dev-api'
+          repository: 'dev-node'
           command: 'buildAndPush'
-          Dockerfile: '**/node-app/backend/Dockerfile'
+          Dockerfile: '**/node-app/node/Dockerfile'
           tags: |
             $(Build.BuildId)
             latest

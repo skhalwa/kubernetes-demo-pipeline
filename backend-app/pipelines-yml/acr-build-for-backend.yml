@@ -33,7 +33,7 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'demo-docker-connection'
-          repository: 'dev-api'
+          repository: 'dev-backend'
           command: 'buildAndPush'
           Dockerfile: '**/backend-app/backend/Dockerfile'
           tags: |

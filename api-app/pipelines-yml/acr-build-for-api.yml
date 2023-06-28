@@ -64,5 +64,4 @@ stages:
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)/a'
           ArtifactName: 'drop'
-          publishLocation: 'Container'  
-###############################
+          publishLocation: 'Container'   

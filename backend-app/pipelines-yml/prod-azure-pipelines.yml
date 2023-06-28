@@ -5,7 +5,9 @@ trigger:
       - production
   paths:
     include:
-      - /backend
+    - /backend-app/backend
+      /backend-app/minifest
+      /backend-app/pipelines-yml
 
 pool:
   vmImage: ubuntu-latest
