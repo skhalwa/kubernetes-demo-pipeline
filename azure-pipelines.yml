@@ -34,7 +34,7 @@ stages:
             latest
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(agent.builddirectory)/source/api'
+          SourceFolder: '$(agent.builddirectory)/s/api'
           Contents: '**'
           TargetFolder: '$(build.artifactstagingdirectory)/a'
       - task: PublishBuildArtifacts@1
