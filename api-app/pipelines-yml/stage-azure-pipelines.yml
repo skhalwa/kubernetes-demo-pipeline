@@ -13,7 +13,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 extends:
-  template: ./pipelines-yml/acr-build-for-api.yml
+  template: api/pipelines-yml/acr-build-for-api.yml
 
 # stages:
 # - stage: Push
