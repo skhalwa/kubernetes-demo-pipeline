@@ -12,9 +12,8 @@ stages:
           repository: 'staging-api'
           command: 'buildAndPush'
           Dockerfile: '**/api-app/api/Dockerfile'
-          tags: |
-            $(Build.BuildId)
-            latest
+          tags: latest
+
       - task: CopyFiles@2
         inputs:
           SourceFolder: '$(agent.builddirectory)/s/api-app'
@@ -36,9 +35,8 @@ stages:
           repository: 'dev-api'
           command: 'buildAndPush'
           Dockerfile: '**/api-app/api/Dockerfile'
-          tags: |
-            $(Build.BuildId)
-            latest
+          tags: latest
+            
       - task: CopyFiles@2
         inputs:
           SourceFolder: '$(agent.builddirectory)/s/api-app'

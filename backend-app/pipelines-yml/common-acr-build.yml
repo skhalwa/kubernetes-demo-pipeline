@@ -9,15 +9,14 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'demo-docker-connection'
-          repository: 'staging-backend'
+          repository: 'staging-api'
           command: 'buildAndPush'
-          Dockerfile: '**/backend-app/backend/Dockerfile'
-          tags: |
-            $(Build.BuildId)
-            latest
+          Dockerfile: '**/api-app/api/Dockerfile'
+          tags: latest
+
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(agent.builddirectory)/s/backend-app'
+          SourceFolder: '$(agent.builddirectory)/s/api-app'
           Contents: '**'
           TargetFolder: '$(build.artifactstagingdirectory)/a'
       - task: PublishBuildArtifacts@1
@@ -33,15 +32,14 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'demo-docker-connection'
-          repository: 'dev-backend'
+          repository: 'dev-api'
           command: 'buildAndPush'
-          Dockerfile: '**/backend-app/backend/Dockerfile'
-          tags: |
-            $(Build.BuildId)
-            latest
+          Dockerfile: '**/api-app/api/Dockerfile'
+          tags: latest
+            
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(agent.builddirectory)/s/backend-app'
+          SourceFolder: '$(agent.builddirectory)/s/api-app'
           Contents: '**'
           TargetFolder: '$(build.artifactstagingdirectory)/a'
       - task: PublishBuildArtifacts@1
@@ -57,11 +55,11 @@ stages:
       steps:
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(agent.builddirectory)/s/backend-app'
+          SourceFolder: '$(agent.builddirectory)/s/api-app'
           Contents: '**'
           TargetFolder: '$(build.artifactstagingdirectory)/a'
       - task: PublishBuildArtifacts@1
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)/a'
           ArtifactName: 'drop'
-          publishLocation: 'Container'  
+          publishLocation: 'Container'   
