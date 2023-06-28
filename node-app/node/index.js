@@ -3,7 +3,7 @@ const app = express();
 
 app.get('/', (req, res) => {
   console.log('Node application working fine')
-  res.send('NODE APPLICATION WORKING FINE ON DEV');
+  res.send('NODE APPLICATION WORKING FINE ON DEV.');
 });
 
 const port = process.env.PORT || 5000;

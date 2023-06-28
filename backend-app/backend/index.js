@@ -4,7 +4,7 @@ const app = express();
 app.get('/', (req, res) => {
   console.log('working fine on Staging')
 
-  res.send('BACKEND APPLICATION WORKING FINE ON DEV');
+  res.send('BACKEND APPLICATION WORKING FINE ON DEV.');
 });
 
 const port = process.env.PORT || 4000;
