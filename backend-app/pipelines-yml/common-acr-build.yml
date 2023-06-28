@@ -9,7 +9,7 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'demo-docker-connection'
-          repository: 'staging-api'
+          repository: 'staging-backend'
           command: 'buildAndPush'
           Dockerfile: '**/api-app/api/Dockerfile'
           tags: latest
@@ -32,7 +32,7 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'demo-docker-connection'
-          repository: 'dev-api'
+          repository: 'dev-backend'
           command: 'buildAndPush'
           Dockerfile: '**/api-app/api/Dockerfile'
           tags: latest

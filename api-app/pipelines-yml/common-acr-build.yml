@@ -35,7 +35,7 @@ stages:
           repository: 'dev-api'
           command: 'buildAndPush'
           Dockerfile: '**/api-app/api/Dockerfile'
-          tags: latest
+          tags: 
             
       - task: CopyFiles@2
         inputs:
