@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-  console.log('Node application working fine')
+  console.log('Node application working fine..')
   res.send('Node api update');
 });
 
