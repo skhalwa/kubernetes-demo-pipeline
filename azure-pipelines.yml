@@ -16,7 +16,7 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-- stage: push-to-acr
+- stage: push
   displayName: Deploy-to-acr
   jobs:
     - job: staging
