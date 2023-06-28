@@ -28,7 +28,7 @@ stages:
           containerRegistry: 'demo-docker-connection'
           repository: 'staging-api'
           command: 'buildAndPush'
-          Dockerfile: '**/api/Dockerfile'
+          Dockerfile: '**/api-app/api/Dockerfile'
           tags: |
             $(Build.BuildId)
             latest
@@ -52,7 +52,7 @@ stages:
           containerRegistry: 'demo-docker-connection'
           repository: 'dev-api'
           command: 'buildAndPush'
-          Dockerfile: '**/api/Dockerfile'
+          Dockerfile: '**/api-app/api/Dockerfile'
           tags: |
             $(Build.BuildId)
             latest
