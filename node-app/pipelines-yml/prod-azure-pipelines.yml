@@ -3,9 +3,11 @@ trigger:
   branches:
     include:
       - production
-  paths:
+  ppaths:
     include:
-      - /node
+      - /node-app/node
+      - /node-app/manifest
+      - /node-app/pipelines.yml
 
 pool:
   vmImage: ubuntu-latest

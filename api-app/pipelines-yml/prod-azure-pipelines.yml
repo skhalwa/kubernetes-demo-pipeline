@@ -5,7 +5,9 @@ trigger:
       - production
   paths:
     include:
-      - /api
+    - /api-app/api
+    - /api-app/manifest
+    - /api-app/pipelines-yml
 
 pool:
   vmImage: ubuntu-latest
