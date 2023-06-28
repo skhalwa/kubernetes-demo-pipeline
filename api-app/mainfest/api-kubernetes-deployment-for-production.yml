@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: vikrant1020/greensight:api
+        image: mooglelabsdemo.azurecr.io/staging-api:latest
         imagePullPolicy: Always
         resources:
           limits:
