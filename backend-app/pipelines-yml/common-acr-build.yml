@@ -1,71 +1,67 @@
 stages:
-- stage: Push
-  displayName: Deploy To ACR
-  jobs: 
-  - job: staging
-    displayName: Push
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/staging')
-    steps:
+- stage: push
+  displayName: Deploy-to-acr
+  jobs:
+    - job: staging
+      displayName: creating-image
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/staging')
+      steps:
       - task: Docker@2
         inputs:
-          containerRegistry: 'mooglelabsdemo'
-          repository: dev-backend
+          containerRegistry: 'demo-docker-connection'
+          repository: 'staging-backend'
           command: 'buildAndPush'
           Dockerfile: '**/backend-app/backend/Dockerfile'
           tags: |
-            $(Build.BuildID)
+            $(Build.BuildId)
             latest
-
-      - task: CopyPublishBuildArtifacts@1
+      - task: CopyFiles@2
         inputs:
+          SourceFolder: '$(agent.builddirectory)/s/backend-app'
           Contents: '**'
-          ArtifactName: 'drop'
-          ArtifactType: 'Container'
-          
+          TargetFolder: '$(build.artifactstagingdirectory)/a'
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/a'
           ArtifactName: 'drop'
           publishLocation: 'Container'
-  
-  - job: dev
-    displayName: Push
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
-    steps:
+
+    - job: dev
+      displayName: creating-image
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
+      steps:
       - task: Docker@2
         inputs:
-          containerRegistry: 'mooglelabsdemo'
-          repository: dev-backend
+          containerRegistry: 'demo-docker-connection'
+          repository: 'dev-backend'
           command: 'buildAndPush'
           Dockerfile: '**/backend-app/backend/Dockerfile'
-          tags: 'dev'
-      - task: CopyPublishBuildArtifacts@1
+          tags: |
+            $(Build.BuildId)
+            latest
+      - task: CopyFiles@2
         inputs:
+          SourceFolder: '$(agent.builddirectory)/s/backend-app'
           Contents: '**'
-          ArtifactName: 'drop'
-          ArtifactType: 'Container'
-          
+          TargetFolder: '$(build.artifactstagingdirectory)/a'
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/a'
           ArtifactName: 'drop'
-          publishLocation: 'Container'
-
-  - job: production
-    displayName: Push
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/production')
-    steps:
-      - task: CopyPublishBuildArtifacts@1
+          publishLocation: 'Container'  
+        
+      
+    - job: production
+      displayName: creating-image
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/production')
+      steps:
+      - task: CopyFiles@2
         inputs:
+          SourceFolder: '$(agent.builddirectory)/s/backend-app'
           Contents: '**'
-          ArtifactName: 'drop'
-          ArtifactType: 'Container'
-          
+          TargetFolder: '$(build.artifactstagingdirectory)/a'
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/a'
           ArtifactName: 'drop'
-          publishLocation: 'Container'
-  
-    
-
+          publishLocation: 'Container'  
