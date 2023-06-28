@@ -12,5 +12,5 @@ pool:
   vmImage: 'ubuntu-latest'
 
 extends:
-  template: acr-build-backend.yml
+  template: common-acr-build.yml
 

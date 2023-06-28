@@ -2,15 +2,17 @@ trigger:
   batch: true
   branches:
     include:
-    - stageing
+    - dev
 
   paths:
     include:
-    - /backend
+    - /api-app/api
+      /api-app/manifest
+      /api-app/pipelines-yml
 
 pool:
   vmImage: 'ubuntu-latest'
 
 extends:
-  template: common-acr-build.yml
+  template: acr-build-api.yml
 

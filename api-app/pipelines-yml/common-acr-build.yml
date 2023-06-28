@@ -2,16 +2,19 @@ stages:
 - stage: Push
   displayName: Deploy To ACR
   jobs: 
-  - job: stageing
+  - job: staging
     displayName: Push
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/stageing')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/staging')
     steps:
       - task: Docker@2
         inputs:
-          containerRegistry: 'gsvikrant.azurecr.io'
-          repository: backend
+          containerRegistry: 'mooglelabsdemo'
+          repository: dev-api
           command: 'buildAndPush'
-          Dockerfile: '**/api/Dockerfile'
+          Dockerfile: '**/api-app/api/Dockerfile'
+          tags: |
+            $(Build.BuildID)
+            latest
 
       - task: CopyPublishBuildArtifacts@1
         inputs:
@@ -31,10 +34,10 @@ stages:
     steps:
       - task: Docker@2
         inputs:
-          containerRegistry: 'gsvikrant.azurecr.io'
-          repository: backend_dev
+          containerRegistry: 'mooglelabsdemo'
+          repository: dev-api
           command: 'buildAndPush'
-          Dockerfile: '**/api/Dockerfile'
+          Dockerfile: '**/api-app/api/Dockerfile'
           tags: 'dev'
       - task: CopyPublishBuildArtifacts@1
         inputs:

@@ -1,0 +1,71 @@
+stages:
+- stage: Push
+  displayName: Deploy To ACR
+  jobs: 
+  - job: staging
+    displayName: Push
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/staging')
+    steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'mooglelabsdemo'
+          repository: dev-node
+          command: 'buildAndPush'
+          Dockerfile: '**/node-app/node/Dockerfile'
+          tags: |
+            $(Build.BuildID)
+            latest
+
+      - task: CopyPublishBuildArtifacts@1
+        inputs:
+          Contents: '**'
+          ArtifactName: 'drop'
+          ArtifactType: 'Container'
+          
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
+  
+  - job: dev
+    displayName: Push
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
+    steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'mooglelabsdemo'
+          repository: dev-node
+          command: 'buildAndPush'
+          Dockerfile: '**/node-app/node/Dockerfile'
+          tags: 'dev'
+      - task: CopyPublishBuildArtifacts@1
+        inputs:
+          Contents: '**'
+          ArtifactName: 'drop'
+          ArtifactType: 'Container'
+          
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
+
+  - job: production
+    displayName: Push
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/production')
+    steps:
+      - task: CopyPublishBuildArtifacts@1
+        inputs:
+          Contents: '**'
+          ArtifactName: 'drop'
+          ArtifactType: 'Container'
+          
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
+  
+    
+
