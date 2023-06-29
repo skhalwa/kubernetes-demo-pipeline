@@ -13,7 +13,7 @@ spec:
         app: node
     spec:
       containers:
-      - name: api
+      - name: node
         image: mooglelabsdemo.azurecr.io/staging-node:latest
         imagePullPolicy: Always
         resources:
