@@ -11,13 +11,13 @@ stages:
           containerRegistry: 'demo-docker-connection'
           repository: 'staging-node'
           command: 'buildAndPush'
-          Dockerfile: '**/node-app/node/Dockerfile'
+          Dockerfile: '**/api-app/api/Dockerfile'
           tags: |
             $(Build.BuildId)
             latest
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(agent.builddirectory)/s/node-app'
+          SourceFolder: '$(agent.builddirectory)/s/api-app'
           Contents: '**'
           TargetFolder: '$(build.artifactstagingdirectory)/a'
       - task: PublishBuildArtifacts@1
@@ -35,13 +35,13 @@ stages:
           containerRegistry: 'demo-docker-connection'
           repository: 'dev-node'
           command: 'buildAndPush'
-          Dockerfile: '**/node-app/node/Dockerfile'
+          Dockerfile: '**/api-app/api/Dockerfile'
           tags: |
             $(Build.BuildId)
             latest
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(agent.builddirectory)/s/node-app'
+          SourceFolder: '$(agent.builddirectory)/s/api-app'
           Contents: '**'
           TargetFolder: '$(build.artifactstagingdirectory)/a'
       - task: PublishBuildArtifacts@1
